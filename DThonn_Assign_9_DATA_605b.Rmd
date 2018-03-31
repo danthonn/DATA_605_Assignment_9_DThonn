@@ -1,0 +1,177 @@
+---
+title: "DATA_605_Assignment_9_DThonn"
+file: DThonn_Assign9_DATA_605
+name: Daniel Thonn
+output:
+  html_document: default
+  pdf_document: default
+course: DATA 605 CUNY MSDA program
+---
+
+** DATA_605_Assignment_9_Thonn - Probability Central Limit  **
+
+
+http://rpubs.com/danthonn/375553
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+``````{r, echo=TRUE}
+# install libraries if needed
+#install.packages("permutations")
+#library(permutations)
+
+#install.packages('gtools')
+#library(gtools)
+
+```
+Assignment-9:
+1. #11 page 363
+2. Calculate the expected value and variance of the binomial distribution using the moment generating function.
+3. Calculate the expected value and variance of the exponential distribution using the moment generating function.
+
+** 1. - Problem-Ch.9 - #11, pg. 363 **
+
+The price of one share of stock in the Pilsdorff Beer Company (see Exercise
+8.2.12) is given by Yn on the nth day of the year. Finn observes that
+the differences Xn = Yn+1 − Yn appear to be independent random variables
+with a common distribution having mean μ = 0 and variance sigma^2 = 1/4. If
+Y_1 = 100, estimate the probability that Y_365 is
+
+(a) >= 100.
+
+
+
+p(Y_365 - Y_1 >= 0) = P( (Y_365-Y_1)/(364^(1/2)) >= 0/(364^(1/2))
+
+``````{r, echo=TRUE}
+
+xa <- 0/sqrt(364)
+sigma1 <- sqrt(1/4)
+pa <- pnorm(q = xa, mean = 0, sd = sigma1, lower.tail = FALSE)
+pa
+# [1] 0.5 
+
+
+```
+
+
+(b) >= 110.
+
+p(Y_365 - Y_1 >= 10) = P( (Y_365-Y_1)/(364^(1/2)) >= 10/(364^(1/2))
+
+``````{r, echo=TRUE}
+xb <- 10/sqrt(364)
+sigma1 <- sqrt(1/4)
+pb <- pnorm(q = xb, mean = 0, sd = sigma1, lower.tail = FALSE)
+round(pb,4)
+# [1] 0.1473
+
+```
+
+
+(c) >=  120.
+
+p(Y_365 - Y_1 >= 20) = P( (Y_365-Y_1)/(364^(1/2)) >= 20/(364^(1/2))
+
+``````{r, echo=TRUE}
+xc <- 20/sqrt(364)
+sigma1 <- sqrt(1/4)
+pc <- pnorm(q = xc, mean = 0, sd = sigma1, lower.tail = FALSE)
+round(pc,4)
+# [1] 0.018
+
+
+```
+
+** 2. - Problem-Ch.9 - moment generating function **
+
+Problem: Calculate the expected value and variance of the binomial distribution using the moment generating function.
+
+
+Binomial:
+$$M_x(t) =  E(e^{tx})$$
+
+$$ \sum_{x=0}^n e^{tx} (\begin{array}{cc} n \\ k \end{array})p^x(1-p)^{n-x}$$
+$$ = ((1-p) + pe^{t})^{n}$$
+
+Expected Value:
+
+
+$$M_x(t) = \sum_{x=0}^{n} e^{xt} C(n,x)p^x(1-p)^{n-x}$$ $$M_x(t) = \sum_{x=0}^{n} (pe^t)^x(1-p)^{n-x}$$ $$M_x(t) = ((1-p) + pe^t)^n$$
+
+Differentiate with respect to t:
+$$M'(t) = n((1-p) + pe^t)^{n-1}pe^t$$
+
+
+substitute $t = 0$
+
+Then obtain the Expected Value
+$$E(x) = M'(0) = np((1-p) + p)^{n-1} = np$$
+
+
+Variance:
+
+differentiate Mx(0)
+
+$$\frac{d^2M_x(t)}{dt^2} = npe^t((n-1)((1-p) + pe^t)^{n-2}pe^t) + ((1-p) + pe^t)^{n-1}(npe^t)$$
+$$E(X^2) = M''(0)$$
+
+with t = 0:
+$$E(X^2) = \frac{d^2M_x(0)}{dt^2} = np[1 * (n-1)* 1^{n-2}p*1 + [p*1 + (1-p)]^{n-1} *1 $$ 
+$$ = n(n-1)p^2 + np $$ 
+
+
+Variance = 
+$V(x) = E(X^2) - (E(x))^2$
+
+
+$$V(x) = E(X^2) - (E(x))^2 = n(n-1)p^2 + np  - n^2p^2 = npq$$
+Variane, V(x):
+$$E(x) = np  ,  and ,   V(x) = npq$$
+
+
+
+
+
+
+** 3. - Problem-Ch.9 - moment generating function **
+
+
+exponential distribution:
+$$f(x) = \lambda e^{-\lambda x}$$
+
+obtain the moment generating function with probability density function $X$:
+$$M_x(t) = \int_{0}^{\infty} e^{tx}\lambda e^{-\lambda x} dx$$ 
+
+$$M_x(t) = \lambda \int_{0}^{\infty}e^{(t-\lambda) x} dx$$ 
+
+
+$$M_x(t) = \lambda  / \lambda - t$$ 
+
+
+
+Expected Value:
+
+$$M'(t) =  - \lambda (\lambda - t)^{-2}$$
+
+$$E(X) = M'(0) = \lambda(\lambda)^{-2} = \lambda^{-1}$$
+
+
+Variance:
+$$M''(t) =  - \lambda (-2)(\lambda - t)^{-3}(-1)$$
+
+$$ =  - \lambda (-2)(\lambda - t)^{-3}(-1) =  2 \lambda(\lambda - t)^{-3} = 2 \lambda^{-2}$$
+$$Var(X) = E(X^2) = M''(0) = 2 \lambda^{-2} - \lambda^2 = \lambda^-2 $$
+
+
+** END **
+
+
+``````{r, echo=TRUE}
+
+```
+
+
